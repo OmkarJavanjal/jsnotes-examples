@@ -289,11 +289,15 @@ let arr2 = [8, 9, 15];
 let merged = [0, ...arr, 2, ...arr2];
 alert(merged); // 0,3,5,1,2,8,9,15 (0, then arr, then 2, then arr2)
 
+//***The spread syntax internally uses iterators to gather elements, the same way as for..of does.
 //**In the examples above we used an array to demonstrate the spread syntax, but any iterable will do. 
 let str = "Hello";
 alert( [...str] ); // H,e,l,l,o
 
-
+let str = "Hello";
+alert( Array.from(str) ); // H,e,l,l,o // Array.from converts an iterable into an array
+//** */ Array.from operates on both array-likes and iterables.
+//** The spread syntax works only with iterables.
 
 
 
