@@ -824,7 +824,9 @@ alert( sum(1, 2) ); // 3
 setInterval allows us to run a function repeatedly, starting after the interval of time, then repeating continuously at that interval.
  */
 
+/*
 let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
+*/
 
 function sayHi(phrase, who) {
   alert( phrase + ', ' + who );
@@ -844,8 +846,8 @@ setTimeout(sayHi(), 1000);
 
 
 //Canceling with clearTimeout
-let timerId = setTimeout(...);
-clearTimeout(timerId);
+/* let timerId = setTimeout(...);
+clearTimeout(timerId);*/
 
 
 let timerId = setTimeout(() => alert("never happens"), 1000);
@@ -854,16 +856,49 @@ clearTimeout(timerId);
 alert(timerId); // same identifier (doesn't become null after canceling) prints same time in ms completed 
 
 
+//setInterval
+//The setInterval method has the same syntax as setTimeout:
+/*
+let timerId = setInterval(func|code, [delay], [arg1], [arg2], ...)
+*/
+
+// repeat with the interval of 2 seconds
+let timerId = setInterval(() => alert('tick'), 2000);
+
+// after 5 seconds stop
+setTimeout(() => { clearInterval(timerId); alert('stop'); }, 5000);
+
+let i = 1;
+setInterval(function() {
+  func(i++);
+}, 100);
+//The real delay between func calls for setInterval is less than in the code!
 
 
+//Nested setTimeout
+//Nested setTimeout allows to set the delay between the executions more precisely than setInterval.
+let i = 1;
+setTimeout(function run() {
+  func(i++);
+  setTimeout(run, 100);
+}, 100);
+//The nested setTimeout guarantees the fixed delay (here 100ms).
 
+//Zero delay setTimeout
+/***
+ * There’s a special use case: setTimeout(func, 0), or just setTimeout(func).
 
+This schedules the execution of func as soon as possible. But the scheduler will invoke it only after the currently executing script is complete.
 
+So the function is scheduled to run “right after” the current script.
 
-
-
-
-
+For instance, this outputs “Hello”, then immediately “World”:
+ */
+setTimeout(() => alert("World"));// then alerts world //it gets pushed inspecial JS event array and  not on code execution stack
+alert("Hello"); //first alerts hello
+/**
+ * The first line “puts the call into calendar after 0ms”. But the scheduler will only “check the calendar” after the current script is complete, so "Hello" is first, and "World" – after it.
+ */
 
 
 
