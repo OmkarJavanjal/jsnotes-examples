@@ -645,16 +645,153 @@ alert(window.currentUser.name); // John
 //-----------------------------------------------------------------//
 
 //6.6- Function object, NFE
+
+//***The “name” property
+//a function’s name is accessible as the “name” property:
+
 let sayHi = function() {
   alert("Hi");
 };
 alert(sayHi.name); // sayHi (there's a name!)
 
+// The “length” property
+//*** */ There is another built-in property “length” that returns the number of function parameters, for instance:
+function f1(a) {}
+function f2(a, b) {}
+function many(a, b, ...more) {}
+alert(f1.length); // 1
+alert(f2.length); // 2
+alert(many.length); // 2
 
 
+//Custom properties
+//We can also add properties of our own.
+function makeCounter() {
+  // instead of:
+  // let count = 0
+  function counter() {
+    return counter.count++;
+  };
+  counter.count = 0;
+  return counter;
+}
+let counter = makeCounter();
+alert( counter() ); // 0
+alert( counter() ); // 1
 
 
+function makeCounter() {
+  function counter() {
+    return counter.count++;
+  };
+  counter.count = 0;
+  return counter;
+}
+let counter = makeCounter();
+counter.count = 10;
+alert( counter() ); // 10
 
+
+//Named Function Expression
+//ordinary Function Expression:
+let sayHi = function(who) {
+  alert(`Hello, ${who}`);
+};
+
+//Named Function Expression
+let sayHi = function func(who) {
+  alert(`Hello, ${who}`);
+};
+
+/***
+ * There are two special things about the name func, that are the reasons for it:
+It allows the function to reference itself internally.
+It is not visible outside of the function.
+ */
+let sayHi = function func(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    func("Guest"); // use func to re-call itself
+  }
+};
+sayHi(); // Hello, Guest
+// But this won't work:
+func(); // Error, func is not defined (not visible outside of the function)
+
+
+//**We can do this also
+let sayHi = function(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    sayHi("Guest");
+  }
+};
+
+//but the issue is if we change sayHI in further code it may give error:
+let sayHi = function(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    sayHi("Guest"); // Error: sayHi is not a function
+  }
+};
+let welcome = sayHi;
+sayHi = null;
+welcome(); // Error, the nested sayHi call doesn't work any more!
+
+
+//now it is fine
+let sayHi = function func(who) {
+  if (who) {
+    alert(`Hello, ${who}`);
+  } else {
+    func("Guest"); // Now all fine
+  }
+};
+let welcome = sayHi;
+sayHi = null;
+welcome(); // Hello, Guest (nested call works)
+
+
+//Tasks
+
+/**
+ * Set and decrease for counter
+ * Modify the code of makeCounter() so that the counter can also decrease and set the number:
+
+counter() should return the next number (as before).
+counter.set(value) should set the counter to value.
+counter.decrease() should decrease the counter by 
+ */
+function makeCounter() {
+  let count = 0;
+
+  function counter() {
+    return count++;
+  }
+  counter.set = value => count = value;
+  counter.decrease = () => count--;
+  return counter;
+}
+
+//Sum with an arbitrary amount of brackets
+function sum(a) {
+  let currentSum = a;
+  function f(b) {
+    currentSum += b;
+    return f;
+  }
+  f.toString = function() {
+    return currentSum;
+  };
+  return f;
+}
+alert( sum(1)(2) ); // 3
+alert( sum(5)(-1)(2) ); // 6
+alert( sum(6)(-1)(-2)(-3) ); // 0
+alert( sum(0)(1)(2)(3)(4)(5) ); // 15
 
 
 
