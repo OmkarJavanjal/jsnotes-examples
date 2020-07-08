@@ -137,3 +137,40 @@ function factorial(n) {
 console.log( factorial(5) ); // 120
 
 //Fibonacci numbers
+//returns last element-
+var looping = function(n) {
+  var a =0, b=1,f=1;
+  for(var i=2; i<=n; i++) {
+    f=a+b;
+    a=b;
+    b=f;
+  }
+  return f;
+}
+console.log(looping(3)); //returns 2. fib starts like 1,1,2,3,5...
+
+function fib(n){  //returns fib series
+  let arr = [0,1];
+  for (let i = 2; i < n + 1; i++){
+    arr.push(arr[i - 2] + arr[i -1])
+  }
+ return arr
+}
+console.log(fib(4));//returns [0,1,1,2,3] //array series starts with 0 like [0,1,1,2,]
+
+function fib(n){  //returns fib series
+  let arr = [1,1];
+  for (let i = 2; i < n ; i++){
+    arr.push(arr[i - 2] + arr[i -1])
+  }
+ return arr
+}
+console.log(fib(4)); //returns [1,1,2,3]
+
+function fib(n) {
+  return n <= 1 ? n : fib(n - 1) + fib(n - 2);
+}
+
+console.log( fib(3) ); // 2
+console.log( fib(7) ); // 13
+
