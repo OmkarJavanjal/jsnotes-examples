@@ -642,7 +642,9 @@ alert(currentUser.name);  // John
 alert(window.currentUser.name); // John
 
 
+//-----------------------------------------------------------------//
 
+//6.6- Function object, NFE
 
 
 
