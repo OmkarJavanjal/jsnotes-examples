@@ -1,6 +1,2 @@
-// Import stylesheets
-import './style.css';
-
-// Write Javascript code!
-const appDiv = document.getElementById('app');
-appDiv.innerHTML = `<h1>JS Starter</h1>`;
+//Topic- Advanced working with functions
+//6.1- Recursion and stack
