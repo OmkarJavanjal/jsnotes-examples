@@ -809,9 +809,12 @@ return total;
 alert( sum(1)(2)() ); // 3
 alert( sum(5)(-1)(2)() ); // 6
 
+//--------------------------------------------------------------------------//
+//6.6- The "new Function" SyntaxError
+let func = new Function ([arg1, arg2, ...argN], functionBody);
 
-
-
+let sum = new Function('a', 'b', 'return a + b');
+alert( sum(1, 2) ); // 3
 
 
 
