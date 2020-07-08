@@ -230,3 +230,86 @@ function printList(list) { //recursion
   }
   console.log(list.value); // output the current item
 }
+
+//------------------------------------------------------------------------//
+//6.2 - Rest parameters and spread syntax
+
+// Rest parameters ...
+//****The rest parameters must be at the end
+
+function sumAll(...args) { // args is the name for the array
+  let sum = 0;
+
+  for (let arg of args) sum += arg;
+
+  return sum;
+}
+console.log( sumAll(1, 2, 3) ); // 6
+
+function showName(firstName, lastName, ...titles) {
+  alert( firstName + ' ' + lastName ); // Julius Caesar
+
+  // the rest go into titles array
+  // i.e. titles = ["Consul", "Imperator"]
+  console.log( titles[0] ); // Consul
+  console.log( titles[1] ); // Imperator
+  console.log( titles.length ); // 2
+}
+
+showName("Julius", "Caesar", "Consul", "Imperator");
+
+//The “arguments” variable
+//There is also a special array-like object named arguments that contains all arguments by their index.
+//****Arrow functions do not have "arguments"
+function showName() {
+  console.log( arguments.length );
+  console.log( arguments[0] );
+  console.log( arguments[1] );
+
+  // it's iterable
+  // for(let arg of arguments) alert(arg);
+}
+
+// shows: 2, Julius, Caesar
+showName("Julius", "Caesar");
+
+// shows: 1, Ilya, undefined (no second argument)
+showName("Ilya");
+
+//Spread syntax
+let arr = [3, 5, 1];
+alert( Math.max(...arr) ); // 5 (spread turns array into a list of arguments)
+
+let arr1 = [1, -2, 3, 4];
+let arr2 = [8, 3, -8, 1];
+alert( Math.max(1, ...arr1, 2, ...arr2, 25) ); // 25
+
+let arr = [3, 5, 1];
+let arr2 = [8, 9, 15];
+let merged = [0, ...arr, 2, ...arr2];
+alert(merged); // 0,3,5,1,2,8,9,15 (0, then arr, then 2, then arr2)
+
+//**In the examples above we used an array to demonstrate the spread syntax, but any iterable will do. 
+let str = "Hello";
+alert( [...str] ); // H,e,l,l,o
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
