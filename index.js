@@ -552,11 +552,68 @@ sayHi();
 //alert(phrase); // Error: phrase is not defined (Check the Developer Console)
 
 
+//**“var” tolerates redeclarations */
+let user;
+let user; // SyntaxError: 'user' has already been declared
 
 
+var user = "Pete";
+var user = "John"; // this "var" does nothing (already declared)
+// ...it doesn't trigger an error
+alert(user); // John
 
+//***“var” variables can be declared below their use */
+function sayHi() {
+  phrase = "Hello";
+  alert(phrase);
+  var phrase;
+}
+sayHi();
 
+//…Or even as this (remember, code blocks are ignored):
+function sayHi() {
+  phrase = "Hello"; // (*)
+  if (false) {
+    var phrase;
+  }
+  alert(phrase);
+}
+sayHi()
 
+//**Declarations are hoisted, but assignments are not.
+function sayHi() {
+  alert(phrase);  //undefined
+  var phrase = "Hello";
+}
+sayHi();
+
+//IIFE
+/***As in the past there was only var, and it has no block-level visibility, programmers invented a way to emulate it. What they did was called “immediately-invoked function expressions” (abbreviated as IIFE). */
+
+(function() {
+
+  let message = "Hello";
+
+  alert(message); // Hello
+
+})();
+// Ways to create IIFE
+
+(function() {
+  alert("Parentheses around the function");
+})();
+
+(function() {
+  alert("Parentheses around the whole thing");
+}());
+
+!function() {
+  alert("Bitwise NOT operator starts the expression");
+}();
+
++function() {
+  alert("Unary plus starts the expression");
+}();
 
 
 
