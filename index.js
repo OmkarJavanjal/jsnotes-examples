@@ -790,13 +790,24 @@ function sum(a) {
 }
 alert( sum(1)(2) ); // 3
 alert( sum(5)(-1)(2) ); // 6
-alert( sum(6)(-1)(-2)(-3) ); // 0
-alert( sum(0)(1)(2)(3)(4)(5) ); // 15
 
+//or
+function sum(a) {
+let total = b => b ? sum(a+b): a;
+total.toString = () => a;
+return total;
+}
 
+alert( sum(1)(2) ); // 3
+alert( sum(5)(-1)(2) ); // 6
 
-
-
+//if we add additional bracket at the end
+function sum(a) {
+let total = b => b ? sum(a+b): a;
+return total;
+}
+alert( sum(1)(2)() ); // 3
+alert( sum(5)(-1)(2)() ); // 6
 
 
 
