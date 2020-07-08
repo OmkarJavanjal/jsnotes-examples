@@ -187,3 +187,46 @@ function fib2(n) {
 
 console.log( fib2(3) ); // 2
 console.log( fib2(7) ); // 13
+
+//Output a single-linked list
+let list = {
+  value: 1,
+  next: {
+    value: 2,
+    next: {
+      value: 3,
+      next: {
+        value: 4,
+        next: null
+      }
+    }
+  }
+};
+
+function printList(list) { //recursion
+  console.log(list.value); // output the current item
+  if (list.next) {
+    printList(list.next); // do the same for the rest of the list
+  }
+}
+
+printList(list);
+
+//or
+function printList2(list) {
+ while(list) {
+  console.log(list.value); // output the current item
+  list=list.next;
+ }
+}
+
+printList2(list);
+
+//prints in reverse order
+function printList(list) { //recursion
+  
+  if (list.next) {
+    printList(list.next); // do the same for the rest of the list
+  }
+  console.log(list.value); // output the current item
+}
