@@ -816,5 +816,88 @@ let func = new Function ([arg1, arg2, ...argN], functionBody);
 let sum = new Function('a', 'b', 'return a + b');
 alert( sum(1, 2) ); // 3
 
+//------------------------------------------------------------------------//
+
+//6.7- Scheduling: setTimeout and setInterval
+/**
+ * setTimeout allows us to run a function once after the interval of time.
+setInterval allows us to run a function repeatedly, starting after the interval of time, then repeating continuously at that interval.
+ */
+
+let timerId = setTimeout(func|code, [delay], [arg1], [arg2], ...)
+
+function sayHi(phrase, who) {
+  alert( phrase + ', ' + who );
+}
+
+setTimeout(sayHi, 1000, "Hello", "John"); // Hello, John
+
+//**If the first argument is a string, then JavaScript creates a function from it. */
+setTimeout("alert('Hello')", 1000);
+
+//But using strings is not recommended, use arrow functions instead of them, like this:
+setTimeout(() => alert('Hello'), 1000);
+
+//Pass a function, but don’t run it
+// wrong!
+setTimeout(sayHi(), 1000);
+
+
+//Canceling with clearTimeout
+let timerId = setTimeout(...);
+clearTimeout(timerId);
+
+
+let timerId = setTimeout(() => alert("never happens"), 1000);
+alert(timerId); // timer identifier prints time in ms completed 
+clearTimeout(timerId);
+alert(timerId); // same identifier (doesn't become null after canceling) prints same time in ms completed 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
