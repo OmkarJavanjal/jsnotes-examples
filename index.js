@@ -903,8 +903,278 @@ alert("Hello"); //first alerts hello
 
 //---------------------------------------------------------------------------------------
 
+//6.9 and 6.10 - Call Bind Apply
 
-s
+//Bind
+const module = {
+  x: 42,
+  getX: function() {
+    return this.x;
+  }
+};
+const unboundGetX = module.getX;
+console.log(unboundGetX()); // The function gets invoked at the global scope
+// expected output: undefined
+const boundGetX = unboundGetX.bind(module);
+console.log(boundGetX());
+// expected output: 42
+
+//
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+setTimeout(user.sayHi, 1000); // Hello, undefined!
+
+//Solution 1: a wrapper
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+setTimeout(function() {
+  user.sayHi(); // Hello, John!
+}, 1000);
+
+//with arrow function
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+setTimeout(() => user.sayHi(), 1000);
+// ...the value of user changes within 1 second
+user = {
+  sayHi() { alert("Another user in setTimeout!"); }
+};
+// Another user in setTimeout!
+//This solutiondoes not guarantee the result if value changes wiithin 1 sec like above
+
+//Solution 2: bind
+let user = {
+  firstName: "John"
+};
+function func() {
+  alert(this.firstName);
+}
+let funcUser = func.bind(user);
+funcUser(); // John
+
+
+let user = {
+  firstName: "John"
+};
+function func(phrase) {
+  alert(phrase + ', ' + this.firstName);
+}
+// bind this to user
+let funcUser = func.bind(user);
+funcUser("Hello"); // Hello, John (argument "Hello" is passed, and this=user)
+
+
+//with obj model
+let user = {
+  firstName: "John",
+  sayHi() {
+    alert(`Hello, ${this.firstName}!`);
+  }
+};
+let sayHi = user.sayHi.bind(user); // (*)
+// can run it without an object
+sayHi(); // Hello, John!  //Guarantees the result
+setTimeout(sayHi, 1000); // Hello, John!
+// even if the value of user changes within 1 second
+// sayHi uses the pre-bound value
+user = {
+  sayHi() { alert("Another user in setTimeout!"); }
+};
+
+
+let user = {
+  firstName: "John",
+  say(phrase) {
+    alert(`${phrase}, ${this.firstName}!`);
+  }
+};
+let say = user.say.bind(user);
+say("Hello"); // Hello, John ("Hello" argument is passed to say)
+say("Bye"); // Bye, John ("Bye" is passed to say)
+
+
+//Partial function’s
+//let bound = func.bind(context, [arg1], [arg2], ...);
+
+function mul(a, b) {
+  return a * b;
+}
+let double = mul.bind(null, 2);
+alert( double(3) ); // = mul(2, 3) = 6
+alert( double(4) ); // = mul(2, 4) = 8
+
+
+function partial(func, ...argsBound) {
+  return function(...args) { // (*)
+    return func.call(this, ...argsBound, ...args);
+  }
+}
+// Usage:
+let user = {
+  firstName: "John",
+  say(time, phrase) {
+    alert(`[${time}] ${this.firstName}: ${phrase}!`);
+  }
+};
+// add a partial method with fixed time
+user.sayNow = partial(user.say, new Date().getHours() + ':' + new Date().getMinutes());
+user.sayNow("Hello");
+// Something like:// [10:00] John: Hello!
+
+
+//What will be the output?
+function f() {
+  alert( this ); // ?
+}
+let user = {
+  g: f.bind(null)
+};
+user.g();
+//The answer: null.
+// The context of a bound function is hard-fixed. There’s just no way to further change it.
+// So even while we run user.g(), the original function is called with this=null.
+
+
+// Can we change this by additional binding?
+// What will be the output?
+function f() {
+  alert(this.name);
+}
+f = f.bind( {name: "John"} ).bind( {name: "Ann" } );
+f();
+// The answer: John.
+// The exotic bound function object returned by f.bind(...) remembers the context (and arguments if provided) only at creation time.
+// A function cannot be re-bound.
+
+function sayHi() {
+  alert( this.name );
+}
+sayHi.test = 5;
+let bound = sayHi.bind({
+  name: "John"
+});
+alert( bound.test ); // what will be the output? why?
+// The answer: undefined.
+// The result of bind is another object. It does not have the test property.
+
+
+//Apply   func.apply(thisArg, [ argsArray])
+const numbers = [5, 6, 2, 3, 7];
+const max = Math.max.apply(null, numbers);
+console.log(max);
+// expected output: 7
+const min = Math.min.apply(null, numbers);
+console.log(min);
+// expected output: 2
+
+const array = ['a', 'b'];
+const elements = [0, 1, 2];
+array.push.apply(array, elements);
+console.info(array); // ["a", "b", 0, 1, 2]
+
+
+function greet(greeting, lang) {
+  console.log(lang);
+  console.log(`${greeting}, I am ${this.name} and I am ${this.age} years old`);
+}
+const john = {
+  name: 'John',
+  age: 24,
+};
+const jane = {
+  name: 'Jane',
+  age: 22,
+};
+// Hi, I am John and I am 24 years old
+greet.apply(john, ['Hi', 'en']);
+// Hi, I am Jane and I am 22 years old
+greet.apply(jane, ['Hola', 'es']); //Array
+
+
+//Call
+function greeting() {
+  console.log(`Hi, I am ${this.name} and I am ${this.age} years old`);
+}
+const john = {
+  name: 'John',
+  age: 24,
+};
+const jane = {
+  name: 'Jane',
+  age: 22,
+};
+// Hi, I am John and I am 24 years old
+greeting.call(john);
+// Hi, I am Jane and I am 22 years old
+greeting.call(jane);
+
+
+
+function greet(greeting) {
+  console.log(`${greeting}, I am ${this.name} and I am ${this.age} years old`);
+}
+const john = {
+  name: 'John',
+  age: 24,
+};
+const jane = {
+  name: 'Jane',
+  age: 22,
+};
+// Hi, I am John and I am 24 years old
+greet.call(john, 'Hi');
+// Hi, I am Jane and I am 22 years old
+greet.call(jane, 'Hello'); //multiple argument values instead of array of values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
