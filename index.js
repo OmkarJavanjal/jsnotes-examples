@@ -1143,7 +1143,14 @@ greet.call(jane, 'Hello'); //multiple argument values instead of array of values
 //---------------------------------------------------------------------------//
 
 //6.11 - Arrow functions revisited
+/**
+ * Arrow functions:
 
+Do not have this
+Do not have arguments
+Can’t be called with new
+They also don’t have super
+ */
 //Arrow functions have no “this”
 let group = {
   title: "Our Group",
